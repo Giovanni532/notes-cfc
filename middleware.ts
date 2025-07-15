@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { paths } from '@/paths';
 
 // Routes publiques qui ne nécessitent pas d'authentification
-const publicRoutes = [paths.login, '/api/auth'];
+const publicRoutes = [paths.login, '/api/auth', '/notes', '/notes-public'];
 
 // Routes d'API qui ne nécessitent pas d'authentification
 const publicApiRoutes = ['/api/auth'];
