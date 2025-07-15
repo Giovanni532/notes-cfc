@@ -94,7 +94,7 @@ export default async function CompetencesPage() {
                     Compétences
                 </h1>
                 <p className="text-muted-foreground">
-                    Gérez vos niveaux d'acquisition des compétences
+                    Gérez vos niveaux d&apos;acquisition des compétences
                 </p>
             </div>
 

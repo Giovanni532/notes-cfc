@@ -134,7 +134,7 @@ export function ModulesList({ modules }: ModulesListProps) {
             {Object.keys(filteredModules).length === 0 && searchTerm && (
                 <div className="text-center py-8">
                     <p className="text-muted-foreground">
-                        Aucun module trouvé pour "{searchTerm}"
+                        Aucun module trouvé pour &quot;{searchTerm}&quot;
                     </p>
                 </div>
             )}
