@@ -6,30 +6,17 @@ import { PublicNotesView } from "@/components/public/public-notes-view";
 
 async function getPublicNotes() {
     try {
-        // Récupérer l'utilisateur Salcuni Giovanni spécifiquement
+        // Récupérer le premier utilisateur (ou vous pouvez spécifier un ID particulier)
         const userData = await db
             .select({ id: user.id, name: user.name })
             .from(user)
-            .where(eq(user.name, "Salcuni Giovanni"))
             .limit(1);
 
-        let targetUser = userData[0];
-
         if (userData.length === 0) {
-            // Si l'utilisateur n'existe pas, récupérer le premier utilisateur avec des notes
-            const userWithNotes = await db
-                .select({ id: user.id, name: user.name })
-                .from(user)
-                .innerJoin(userModuleNote, eq(user.id, userModuleNote.userId))
-                .limit(1);
-
-            if (userWithNotes.length === 0) {
-                return null;
-            }
-            targetUser = userWithNotes[0];
+            return null;
         }
 
-        const userId = targetUser.id;
+        const userId = userData[0].id;
 
         // Récupérer tous les modules avec les notes de l'utilisateur
         const modulesWithNotes = await db
@@ -51,10 +38,6 @@ async function getPublicNotes() {
             )
             .orderBy(module.annee, module.code);
 
-        console.log('Debug - User ID:', userId);
-        console.log('Debug - Modules found:', modulesWithNotes.length);
-        console.log('Debug - Sample module:', modulesWithNotes[0]);
-
         // Grouper les modules par année
         const modulesByYear = modulesWithNotes.reduce((acc, mod) => {
             const year = mod.annee;
@@ -69,7 +52,7 @@ async function getPublicNotes() {
         }, {} as Record<number, any[]>);
 
         return {
-            user: targetUser,
+            user: userData[0],
             modules: modulesByYear,
         };
     } catch (error) {
