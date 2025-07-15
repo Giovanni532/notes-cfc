@@ -1,0 +1,299 @@
+[
+  {
+    "id": 1,
+    "nom": "1ère année",
+    "modules": [
+      {
+        "id": 11,
+        "categorieId": 1,
+        "isCie": true,
+        "nom": "216 Intégrer les terminaux IoE dans une plateforme existante",
+        "note": 0
+      },
+      {
+        "id": 7,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "122 Automatiser des procédures à l'aide de scripts",
+        "note": 6
+      },
+      {
+        "id": 1,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "117 Mettre en place l'infrastructure informatique et réseau d'une petite entreprise",
+        "note": 4.5
+      },
+      {
+        "id": 4,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "162 Analyser et modéliser des données",
+        "note": 5.5
+      },
+      {
+        "id": 6,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "164 Créer des bases de données et y insérer des données",
+        "note": 5.5
+      },
+      {
+        "id": 5,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "231 Appliquer la protection et la sécurité des données",
+        "note": 4.5
+      },
+      {
+        "id": 8,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "293 Créer et publier un site Web",
+        "note": 5.5
+      },
+      {
+        "id": 3,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "319 Concevoir et implémenter des applications",
+        "note": 5.5
+      },
+      {
+        "id": 2,
+        "categorieId": 1,
+        "isCie": false,
+        "nom": "431 Exécuter des mandats de manière autonome dans un environnement professionnel",
+        "note": 4.5
+      },
+      {
+        "id": 10,
+        "categorieId": 1,
+        "isCie": true,
+        "nom": "106 Interroger, traiter et assurer la maintenance des bases de données",
+        "note": 5
+      },
+      {
+        "id": 9,
+        "categorieId": 1,
+        "isCie": true,
+        "nom": "187 Mettre en service un Poste de travail ICT avec le système d'exploitation",
+        "note": 5.4
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nom": "2ème année",
+    "modules": [
+      {
+        "id": 14,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "346 Concevoir et réaliser des solutions cloud",
+        "note": 0
+      },
+      {
+        "id": 16,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "165 Utiliser des bases de données NoSQL",
+        "note": 0
+      },
+      {
+        "id": 17,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "347 Utiliser un service avec des conteneurs",
+        "note": 0
+      },
+      {
+        "id": 18,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "426 Développer un logiciel avec des méthodes agiles",
+        "note": 0
+      },
+      {
+        "id": 21,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "295 Réaliser le back-end pour des applications",
+        "note": 0
+      },
+      {
+        "id": 22,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "248 Réaliser des solutions ICT avec des technologies actuelles",
+        "note": 0
+      },
+      {
+        "id": 23,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "190 Mettre en place et exploiter une plateforme de virtualisation",
+        "note": 0
+      },
+      {
+        "id": 24,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "107 Mettre en œuvre des solutions ICT avec la technologie blockchain",
+        "note": 0
+      },
+      {
+        "id": 25,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "109 Exploiter et surveiller des services dans le cloud public",
+        "note": 0
+      },
+      {
+        "id": 26,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "259 Développer des solutions ICT avec le Machine Learning",
+        "note": 0
+      },
+      {
+        "id": 20,
+        "categorieId": 2,
+        "isCie": true,
+        "nom": "294 Réaliser le front-end d'une application Web interactive",
+        "note": 5
+      },
+      {
+        "id": 13,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "320 Programmer orienté objet",
+        "note": 4.5
+      },
+      {
+        "id": 12,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "114 Mettre en œuvre des systèmes de codification, de compression et d'encryptage",
+        "note": 4.5
+      },
+      {
+        "id": 15,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "322 Concevoir et implémenter des interfaces utilisateur",
+        "note": 5
+      },
+      {
+        "id": 19,
+        "categorieId": 2,
+        "isCie": false,
+        "nom": "254 Décrire des processus métier dans son propre environnement professionnel",
+        "note": 5
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nom": "3ème année",
+    "modules": [
+      {
+        "id": 27,
+        "categorieId": 3,
+        "isCie": false,
+        "nom": "323 Programmer de manière fonctionnelle",
+        "note": 0
+      },
+      {
+        "id": 28,
+        "categorieId": 3,
+        "isCie": false,
+        "nom": "450 Tester des applications",
+        "note": 0
+      },
+      {
+        "id": 29,
+        "categorieId": 3,
+        "isCie": false,
+        "nom": "335 Implémenter la sécurité d'une application",
+        "note": 0
+      },
+      {
+        "id": 30,
+        "categorieId": 3,
+        "isCie": false,
+        "nom": "306 Réaliser de petits projets dans son propre environnement professionnel",
+        "note": 0
+      },
+      {
+        "id": 31,
+        "categorieId": 3,
+        "isCie": true,
+        "nom": "223 Réaliser des applications multi-utilisateurs orientées objets",
+        "note": 0
+      },
+      {
+        "id": 32,
+        "categorieId": 3,
+        "isCie": true,
+        "nom": "183 Réaliser une application pour mobile",
+        "note": 0
+      },
+      {
+        "id": 34,
+        "categorieId": 3,
+        "isCie": true,
+        "nom": "217 Concevoir, planifier et mettre en place un service pour l'IoE",
+        "note": 0
+      },
+      {
+        "id": 35,
+        "categorieId": 3,
+        "isCie": true,
+        "nom": "185 Analyser et implémenter des mesures visant à assurer la sécurité informatique des PME",
+        "note": 0
+      },
+      {
+        "id": 33,
+        "categorieId": 3,
+        "isCie": true,
+        "nom": "110 Analyser et représenter des données avec des outils",
+        "note": 4.5
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nom": "4ème année",
+    "modules": [
+      {
+        "id": 36,
+        "categorieId": 4,
+        "isCie": false,
+        "nom": "321 Programmer des systèmes distribués",
+        "note": 0
+      },
+      {
+        "id": 37,
+        "categorieId": 4,
+        "isCie": false,
+        "nom": "324 Prendre en charge des processus DevOps avec des outils logiciels",
+        "note": 0
+      },
+      {
+        "id": 38,
+        "categorieId": 4,
+        "isCie": false,
+        "nom": "241 Initialiser des solutions ICT innovantes",
+        "note": 0
+      },
+      {
+        "id": 39,
+        "categorieId": 4,
+        "isCie": false,
+        "nom": "245 Mettre en œuvre des solutions ICT innovantes",
+        "note": 0
+      }
+    ]
+  }
+]
