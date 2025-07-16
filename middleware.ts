@@ -5,7 +5,7 @@ import { paths } from '@/paths';
 const publicRoutes = [paths.login, '/api/auth', '/notes', '/notes-public'];
 
 // Routes d'API qui ne nécessitent pas d'authentification
-const publicApiRoutes = ['/api/auth'];
+const publicApiRoutes = ['/api/auth', '/api/debug'];
 
 // Routes d'API qui nécessitent une authentification
 const protectedApiRoutes = ['/api/export'];
