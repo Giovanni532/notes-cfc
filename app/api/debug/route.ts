@@ -3,12 +3,13 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/drizzle";
 import { user, module, userModuleNote, competence, domaine, userCompetenceNiveau } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { headers } from "next/headers";
 
 export async function GET(request: NextRequest) {
     try {
         // Test 1: Vérifier l'authentification
         const session = await auth.api.getSession({
-            headers: request.headers,
+            headers: await headers(),
         });
 
         // Test 2: Récupérer les données de base
