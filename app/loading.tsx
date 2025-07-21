@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Loading() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
             <div className="flex flex-col items-center space-y-8">
                 {/* Logo ou titre animé */}
                 <motion.div
@@ -18,7 +18,7 @@ export default function Loading() {
                     {[0, 1, 2].map((index) => (
                         <motion.div
                             key={index}
-                            className="w-3 h-3 bg-blue-500 rounded-full"
+                            className="w-3 h-3 bg-primary rounded-full"
                             animate={{
                                 y: [0, -10, 0],
                                 opacity: [0.5, 1, 0.5]
@@ -32,7 +32,7 @@ export default function Loading() {
                         />
                     ))}
                 </div>
-                <p className="text-gray-600">Chargement en cours...</p>
+                <p className="text-muted-foreground">Chargement en cours...</p>
             </div>
         </div>
     );
