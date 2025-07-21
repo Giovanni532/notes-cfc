@@ -6,11 +6,10 @@ import { PublicNotesView } from "@/components/public/public-notes-view";
 
 async function getPublicNotes() {
     try {
-        // Récupérer l'utilisateur spécifique (Giovanni Salcuni)
         const userData = await db
             .select({ id: user.id, name: user.name })
             .from(user)
-            .where(eq(user.email, 'giovanni.salcuni12@gmail.com'))
+            .where(eq(user.email, process.env.EMAIL_BDD as string))
             .limit(1);
 
         if (userData.length === 0) {
