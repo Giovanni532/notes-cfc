@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { EditNoteDialog } from "./edit-note-dialog";
 import { ModulesHeader } from "./modules-header";
 import { BookOpen, Edit } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Module {
     id: string;
@@ -26,6 +27,7 @@ export function ModulesList({ modules }: ModulesListProps) {
     const [editingModule, setEditingModule] = useState<Module | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const router = useRouter();
 
     // Filtrer les modules selon la recherche
     const filteredModules = useMemo(() => {
@@ -54,7 +56,7 @@ export function ModulesList({ modules }: ModulesListProps) {
 
     const handleDialogSuccess = () => {
         // Recharger la page pour mettre à jour les données
-        window.location.reload();
+        router.refresh();
     };
 
     const getNoteColor = (note: number) => {

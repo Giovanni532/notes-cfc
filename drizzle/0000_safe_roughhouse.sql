@@ -30,7 +30,6 @@ CREATE TABLE `competence_module` (
 	`competence_id` text NOT NULL,
 	`module_id` text NOT NULL,
 	`created_at` integer NOT NULL,
-	`updated_at` integer NOT NULL,
 	FOREIGN KEY (`competence_id`) REFERENCES `competence`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`module_id`) REFERENCES `module`(`id`) ON UPDATE no action ON DELETE cascade
 );
@@ -45,32 +44,14 @@ CREATE TABLE `domaine` (
 CREATE TABLE `module` (
 	`id` text PRIMARY KEY NOT NULL,
 	`nom` text NOT NULL,
-	`is_cie` integer NOT NULL,
+	`code` text NOT NULL,
 	`annee` integer NOT NULL,
+	`is_cie` integer NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `note_utilisateur` (
-	`id` text PRIMARY KEY NOT NULL,
-	`user_id` text NOT NULL,
-	`module_id` text NOT NULL,
-	`note` integer,
-	`created_at` integer NOT NULL,
-	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade,
-	FOREIGN KEY (`module_id`) REFERENCES `module`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
-CREATE TABLE `objectif_evaluateur` (
-	`id` text PRIMARY KEY NOT NULL,
-	`description` text NOT NULL,
-	`competence_id` text NOT NULL,
-	`created_at` integer NOT NULL,
-	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`competence_id`) REFERENCES `competence`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
+CREATE UNIQUE INDEX `module_code_unique` ON `module` (`code`);--> statement-breakpoint
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`expires_at` integer NOT NULL,
@@ -95,6 +76,28 @@ CREATE TABLE `user` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
+CREATE TABLE `user_competence_niveau` (
+	`id` text PRIMARY KEY NOT NULL,
+	`user_id` text NOT NULL,
+	`competence_id` text NOT NULL,
+	`niveau` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`competence_id`) REFERENCES `competence`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `user_module_note` (
+	`id` text PRIMARY KEY NOT NULL,
+	`user_id` text NOT NULL,
+	`module_id` text NOT NULL,
+	`note` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`module_id`) REFERENCES `module`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE TABLE `verification` (
 	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,

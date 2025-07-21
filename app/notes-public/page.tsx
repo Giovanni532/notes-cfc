@@ -45,14 +45,21 @@ async function getPublicNotes() {
                 acc[year] = [];
             }
             acc[year].push({
-                ...mod,
+                id: mod.id,
+                nom: mod.nom,
+                code: mod.code,
+                annee: mod.annee,
+                isCie: mod.isCie,
                 note: mod.note || 0,
             });
             return acc;
         }, {} as Record<number, any[]>);
 
         return {
-            user: userData[0],
+            user: {
+                id: userData[0].id,
+                name: userData[0].name,
+            },
             modules: modulesByYear,
         };
     } catch (error) {

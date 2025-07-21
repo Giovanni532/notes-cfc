@@ -65,6 +65,12 @@ export function EditNoteDialog({ module, open, onOpenChange, onSuccess }: EditNo
         }
     };
 
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSave();
+        }
+    };
+
     const handleCancel = () => {
         onOpenChange(false);
         if (module) {
@@ -93,9 +99,10 @@ export function EditNoteDialog({ module, open, onOpenChange, onSuccess }: EditNo
                             type="number"
                             min="0"
                             max="6"
-                            step="0.1"
+                            step="0.5"
                             value={note}
                             onChange={(e) => setNote(parseFloat(e.target.value) || 0)}
+                            onKeyPress={handleKeyPress}
                             className="col-span-3"
                         />
                     </div>
