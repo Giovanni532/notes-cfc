@@ -6,10 +6,11 @@ import { PublicNotesView } from "@/components/public/public-notes-view";
 
 async function getPublicNotes() {
     try {
-        // Récupérer le premier utilisateur (ou vous pouvez spécifier un ID particulier)
+        // Récupérer l'utilisateur spécifique (Giovanni Salcuni)
         const userData = await db
             .select({ id: user.id, name: user.name })
             .from(user)
+            .where(eq(user.email, 'giovanni.salcuni12@gmail.com'))
             .limit(1);
 
         if (userData.length === 0) {
@@ -18,42 +19,49 @@ async function getPublicNotes() {
 
         const userId = userData[0].id;
 
-        // Récupérer tous les modules avec les notes de l'utilisateur
-        const modulesWithNotes = await db
-            .select({
-                id: module.id,
-                nom: module.nom,
-                code: module.code,
-                annee: module.annee,
-                isCie: module.isCie,
-                note: userModuleNote.note,
-            })
+        // 1. Récupérer tous les modules
+        const allModules = await db
+            .select()
             .from(module)
-            .leftJoin(
-                userModuleNote,
-                and(
-                    eq(module.id, userModuleNote.moduleId),
-                    eq(userModuleNote.userId, userId)
-                )
-            )
             .orderBy(module.annee, module.code);
 
-        // Grouper les modules par année
-        const modulesByYear = modulesWithNotes.reduce((acc, mod) => {
+        // 2. Récupérer toutes les notes de l'utilisateur
+        const userNotes = await db
+            .select({
+                moduleId: userModuleNote.moduleId,
+                note: userModuleNote.note,
+            })
+            .from(userModuleNote)
+            .where(eq(userModuleNote.userId, userId));
+
+        // 3. Créer un map des notes par moduleId
+        const notesMap = new Map();
+        for (const note of userNotes) {
+            notesMap.set(note.moduleId, note.note);
+        }
+
+        // 4. Combiner les données et grouper par année
+        const modulesByYear: Record<number, any[]> = {};
+
+        for (const mod of allModules) {
             const year = mod.annee;
-            if (!acc[year]) {
-                acc[year] = [];
+            if (!modulesByYear[year]) {
+                modulesByYear[year] = [];
             }
-            acc[year].push({
+
+            const userNote = notesMap.get(mod.id);
+
+            modulesByYear[year].push({
                 id: mod.id,
                 nom: mod.nom,
                 code: mod.code,
                 annee: mod.annee,
                 isCie: mod.isCie,
-                note: mod.note || 0,
+                note: userNote || 0,
             });
-            return acc;
-        }, {} as Record<number, any[]>);
+        }
+
+
 
         return {
             user: {
@@ -79,7 +87,7 @@ export default async function PublicNotesPage() {
         <div className="min-h-screen bg-background">
             <div className="container mx-auto py-8 px-4 max-w-4xl">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold tracking-tight mb-2">
+                    <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground">
                         Notes de formation CFC
                     </h1>
                     <p className="text-muted-foreground">

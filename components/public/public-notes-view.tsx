@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 interface Module {
     id: string;
@@ -23,6 +24,7 @@ interface PublicNotesViewProps {
 
 export function PublicNotesView({ modules, userName }: PublicNotesViewProps) {
     const [isExporting, setIsExporting] = useState(false);
+    const { theme, setTheme } = useTheme();
 
     // Calculer les statistiques
     const allModules = Object.values(modules).flat();
@@ -132,7 +134,7 @@ export function PublicNotesView({ modules, userName }: PublicNotesViewProps) {
                         <CardTitle className="text-sm font-medium">Modules notés</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-600">{modulesWithNotes.length}</div>
+                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{modulesWithNotes.length}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -140,57 +142,73 @@ export function PublicNotesView({ modules, userName }: PublicNotesViewProps) {
                         <CardTitle className="text-sm font-medium">Moyenne générale</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-600">{averageNote}/6</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{averageNote}/6</div>
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Bouton d'export */}
-            <div className="flex justify-center">
+            {/* Boutons d'action */}
+            <div className="flex justify-center gap-4">
                 <Button onClick={handleExportPDF} disabled={isExporting} size="lg">
                     <FileText className="size-4 mr-2" />
                     {isExporting ? "Génération..." : "Exporter en PDF"}
+                </Button>
+                <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                >
+                    {theme === "dark" ? (
+                        <Sun className="size-4 mr-2" />
+                    ) : (
+                        <Moon className="size-4 mr-2" />
+                    )}
+                    {theme === "dark" ? "Mode clair" : "Mode sombre"}
                 </Button>
             </div>
 
             {/* Liste des modules par année */}
             <div className="space-y-6">
-                {Object.entries(modules).map(([year, yearModules]) => (
-                    <div key={year} className="space-y-4">
-                        <h2 className="text-2xl font-semibold border-b pb-2">
-                            {year}ème année
-                        </h2>
-                        <div className="grid gap-4">
-                            {yearModules.map((module) => (
-                                <Card key={module.id} className={module.isCie ? "border-yellow-200 bg-yellow-50" : ""}>
-                                    <CardHeader>
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <CardTitle className="text-lg">{module.code}</CardTitle>
-                                                    {module.isCie && (
-                                                        <Badge variant="secondary">CIE</Badge>
-                                                    )}
+                {Object.entries(modules)
+                    .filter(([year, yearModules]) => yearModules.some(module => module.note > 0))
+                    .map(([year, yearModules]) => (
+                        <div key={year} className="space-y-4">
+                            <h2 className="text-2xl font-semibold border-b border-border pb-2 text-foreground">
+                                {year}ème année
+                            </h2>
+                            <div className="grid gap-4">
+                                {yearModules
+                                    .filter(module => module.note > 0)
+                                    .map((module) => (
+                                        <Card key={module.id} className={module.isCie ? "border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-950/20" : ""}>
+                                            <CardHeader>
+                                                <div className="flex items-start justify-between">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <CardTitle className="text-lg">{module.code}</CardTitle>
+                                                            {module.isCie && (
+                                                                <Badge variant="secondary">CIE</Badge>
+                                                            )}
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {module.nom}
+                                                        </p>
+                                                    </div>
+                                                    <div className="ml-4">
+                                                        <Badge
+                                                            variant={module.note >= 4 ? "default" : module.note >= 2 ? "secondary" : "outline"}
+                                                            className="text-lg px-3 py-1 font-semibold"
+                                                        >
+                                                            {module.note}/6
+                                                        </Badge>
+                                                    </div>
                                                 </div>
-                                                <p className="text-sm text-muted-foreground">
-                                                    {module.nom}
-                                                </p>
-                                            </div>
-                                            <div className="ml-4">
-                                                <Badge
-                                                    variant={module.note >= 4 ? "default" : module.note >= 2 ? "secondary" : "outline"}
-                                                    className="text-lg px-3 py-1"
-                                                >
-                                                    {module.note}/6
-                                                </Badge>
-                                            </div>
-                                        </div>
-                                    </CardHeader>
-                                </Card>
-                            ))}
+                                            </CardHeader>
+                                        </Card>
+                                    ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
 
             {Object.keys(modules).length === 0 && (
