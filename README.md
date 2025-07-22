@@ -1,8 +1,43 @@
-# Quickstarter Drizzle - Next.js avec Drizzle ORM + Better Auth
+# Notes CFC - Application de Gestion des Notes et Compétences
 
-Ce projet Next.js utilise Drizzle ORM avec SQLite (better-sqlite3) et Better Auth pour l'authentification avec middleware de protection des routes.
+Application Next.js pour la gestion des notes de modules et du suivi des compétences dans le cadre d'une formation CFC en informatique.
 
-## Variables d'environnement
+## 🎯 Fonctionnalités
+
+### 📚 Gestion des Modules
+- **Notes par module** : Saisie et modification des notes sur 6 pour chaque module
+- **Organisation par année** : Modules regroupés par année de formation (1, 2, 3, 4)
+- **Modules CIE** : Distinction des modules d'entreprise (CIE) des modules d'école
+- **Interface intuitive** : Modification des notes directement dans l'interface
+
+### 🎯 Suivi des Compétences
+- **Compétences CFC** : Base de données complète des compétences du référentiel CFC
+- **Niveaux d'acquisition** : Évaluation des compétences de 1 à 5
+- **Organisation par domaines** : Compétences regroupées par domaines de compétences
+- **Progression visuelle** : Suivi de l'évolution des compétences
+
+### 📊 Visualisation Publique
+- **Page publique** : Affichage public des notes pour partage
+- **Export des données** : Export en JSON et Excel
+- **Interface responsive** : Consultation sur tous les appareils
+
+### 🔐 Authentification
+- **Système de connexion** : Authentification sécurisée avec Better Auth
+- **Protection des routes** : Accès restreint aux utilisateurs connectés
+- **Gestion des sessions** : Sessions persistantes et sécurisées
+
+## 🛠️ Technologies Utilisées
+
+- **[Next.js 15](https://nextjs.org)** - Framework React avec App Router
+- **[Drizzle ORM](https://orm.drizzle.team)** - ORM TypeScript moderne
+- **[Better Auth](https://www.better-auth.com)** - Solution d'authentification complète
+- **[SQLite](https://www.sqlite.org)** - Base de données embarquée
+- **[Tailwind CSS](https://tailwindcss.com)** - Framework CSS utilitaire
+- **[Shadcn/ui](https://ui.shadcn.com)** - Composants UI modernes
+- **[TypeScript](https://www.typescriptlang.org)** - JavaScript avec typage statique
+- **[Safe Actions](https://next-safe-action.com)** - Actions serveur sécurisées
+
+## 📋 Variables d'environnement
 
 Créez un fichier `.env` à la racine du projet avec les variables suivantes :
 
@@ -10,24 +45,22 @@ Créez un fichier `.env` à la racine du projet avec les variables suivantes :
 DB_FILE_NAME=local.db
 BETTER_AUTH_SECRET=your-secret-key-here-change-this-in-production
 BETTER_AUTH_URL=http://localhost:3000
+EMAIL_BDD=email@example.com
 ```
 
 **Important :** 
 - `DB_FILE_NAME` : Chemin vers le fichier SQLite (sans le préfixe `file:`)
-- `BETTER_AUTH_SECRET` doit être une chaîne aléatoire sécurisée en production
-- `BETTER_AUTH_URL` est nécessaire pour le client React
+- `BETTER_AUTH_SECRET` : Clé secrète pour l'authentification (changez en production)
+- `BETTER_AUTH_URL` : URL de l'application pour le client React
+- `EMAIL_BDD` : Email de l'utilisateur pour la page publique des notes
 
-## Installation et configuration
+## 🚀 Installation et configuration
 
 1. **Installer les dépendances** :
    ```bash
    npm install
    # ou
-   yarn install
-   # ou
    pnpm install
-   # ou
-   bun install
    ```
 
 2. **Créer le fichier .env** avec les variables ci-dessus
@@ -37,43 +70,91 @@ BETTER_AUTH_URL=http://localhost:3000
    npm run db:push
    ```
 
-4. **Lancer le projet** :
+4. **Seeder les données** :
    ```bash
-   npm run dev
-   # ou
-   yarn dev
-   # ou
-   pnpm dev
-   # ou
-   bun dev
+   # Seeder les utilisateurs de base
+   npm run db:seed
+   
+   # Seeder les modules et compétences CFC
+   npm run db:seed-notes
    ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour voir le résultat.
+5. **Lancer le projet** :
+   ```bash
+   npm run dev
+   ```
 
-## Architecture Edge Runtime Compatible
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-### 🔧 **Séparation des configurations**
-- `lib/drizzle.ts` : Configuration Drizzle unifiée (compatible Edge Runtime)
-- `middleware.ts` : Utilise l'API Better Auth via fetch (pas d'import direct)
+## 📁 Structure de l'application
 
-### 🔐 **Middleware de protection**
-- **Toutes les routes sont protégées** par défaut
-- Vérification de session via API `/api/auth/get-session`
-- Redirection automatique vers `/login` si non connecté
-- Routes publiques : `/login`, `/signup`, `/api/auth`
-- Redirection vers la page d'origine après connexion
+```
+├── app/
+│   ├── api/
+│   │   ├── [auth]/[...all]/route.ts    # Routes API Better Auth
+│   │   └── export/                     # Export des données
+│   ├── competences/page.tsx            # Page de gestion des compétences
+│   ├── modules/page.tsx                # Page de gestion des modules
+│   ├── notes-public/page.tsx           # Page publique des notes
+│   └── login/page.tsx                  # Page de connexion
+├── components/
+│   ├── auth/                           # Composants d'authentification
+│   ├── competences/                    # Composants de gestion des compétences
+│   ├── modules/                        # Composants de gestion des modules
+│   ├── public/                         # Composants de la page publique
+│   └── ui/                             # Composants UI Shadcn
+├── actions/
+│   ├── competence-actions.ts           # Actions pour les compétences
+│   └── module-actions.ts               # Actions pour les modules
+├── db/
+│   └── schema.ts                       # Schéma de base de données
+├── data/
+│   ├── competence.json                 # Données des compétences CFC
+│   └── CFC Notes Seed Data July 2025.json  # Données de seed
+└── lib/
+    ├── auth.ts                         # Configuration Better Auth
+    ├── auth-client.ts                  # Client Better Auth
+    ├── drizzle.ts                      # Configuration Drizzle
+    └── safe-action.ts                  # Configuration Safe Actions
+```
 
-### 📝 Pages disponibles
-- `/login` - Connexion utilisateur
-- `/signup` - Inscription utilisateur  
-- `/` - Tableau de bord (protégé)
+## 🗄️ Base de données
 
-### 🎯 Composants d'authentification
-- `LoginForm` - Formulaire de connexion
-- `SignupForm` - Formulaire d'inscription
-- `UserProfile` - Profil utilisateur avec déconnexion
+### Tables principales
+- **user** : Utilisateurs de l'application
+- **module** : Modules de formation (431, 306, etc.)
+- **competence** : Compétences du référentiel CFC
+- **domaine** : Domaines de compétences
+- **userModuleNote** : Notes des utilisateurs par module
+- **userCompetenceNiveau** : Niveaux d'acquisition des compétences
 
-## Scripts disponibles
+### Relations
+- Un utilisateur peut avoir plusieurs notes de modules
+- Un utilisateur peut avoir plusieurs niveaux de compétences
+- Les compétences sont liées aux domaines
+- Les compétences peuvent être liées à plusieurs modules
+
+## 📊 Fonctionnalités détaillées
+
+### Gestion des Modules
+- **Saisie des notes** : Interface intuitive pour modifier les notes
+- **Validation** : Notes sur 6 avec décimales autorisées
+- **Organisation** : Groupement par année de formation
+- **Distinction CIE** : Identification des modules d'entreprise
+
+### Suivi des Compétences
+- **Référentiel complet** : Toutes les compétences CFC incluses
+- **Évaluation progressive** : Niveaux de 1 à 5
+- **Objectifs évaluateurs** : Critères d'évaluation détaillés
+- **Liaison modules** : Association compétences-modules
+
+### Export et Partage
+- **Export JSON** : Données structurées pour traitement externe
+- **Export Excel** : Format tabulaire pour analyse
+- **Page publique** : Affichage public des notes
+- **URL partageable** : Accès direct aux résultats
+
+## 🔧 Scripts disponibles
 
 - `npm run dev` - Lance le serveur de développement
 - `npm run build` - Construit l'application pour la production
@@ -81,127 +162,68 @@ Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour
 - `npm run lint` - Lance le linter ESLint
 - `npm run db:generate` - Génère les fichiers de migration
 - `npm run db:migrate` - Applique les migrations
-- `npm run db:push` - Pousse directement les changements de schéma (dev)
+- `npm run db:push` - Pousse directement les changements de schéma
 - `npm run db:studio` - Lance Drizzle Studio pour visualiser la DB
-- `npm run auth:generate` - Génère le schéma Better Auth
+- `npm run db:seed` - Seeder les utilisateurs de base
+- `npm run db:seed-notes` - Seeder les modules et compétences
+- `npm run db:reset` - Reset complet de la base de données
 
-## Structure des fichiers
+## 🎨 Interface utilisateur
 
-```
-├── middleware.ts              # Middleware Edge Runtime compatible
-├── db/
-│   └── schema.ts             # Schéma Drizzle avec tables Better Auth
-├── lib/
-│   ├── drizzle.ts            # Configuration Drizzle unifiée
-│   ├── auth.ts               # Configuration Better Auth (serveur)
-│   ├── auth-client.ts        # Client Better Auth (React)
-│   └── db-example.ts         # Exemples d'utilisation
-├── components/
-│   └── auth/
-│       ├── login-form.tsx    # Formulaire de connexion
-│       ├── signup-form.tsx   # Formulaire d'inscription
-│       ├── user-profile.tsx  # Profil utilisateur
-│       └── index.ts          # Exports
-├── app/
-│   ├── login/page.tsx        # Page de connexion
-│   ├── signup/page.tsx       # Page d'inscription
-│   ├── page.tsx              # Tableau de bord
-│   └── [api]/[auth]/[...all]/route.ts  # Routes API Better Auth
-├── drizzle.config.ts         # Configuration Drizzle Kit
-└── .env                      # Variables d'environnement
-```
+### Design System
+- **Shadcn/ui** : Composants modernes et accessibles
+- **Tailwind CSS** : Styling utilitaire et responsive
+- **Thème sombre/clair** : Support des thèmes
+- **Animations** : Transitions fluides avec Framer Motion
 
-## Utilisation
+### Responsive Design
+- **Mobile-first** : Optimisé pour tous les écrans
+- **Navigation intuitive** : Sidebar et breadcrumbs
+- **Formulaires optimisés** : Validation en temps réel
+- **Feedback utilisateur** : Notifications et états de chargement
 
-### Authentification côté client
+## 🔒 Sécurité
 
-```typescript
-import { authClient } from '@/lib/auth-client';
-
-// Hook de session
-const { data: session, isPending } = authClient.useSession();
-
-// Connexion
-await authClient.signIn.email({
-  email: 'user@example.com',
-  password: 'password123'
-});
-
-// Inscription
-await authClient.signUp.email({
-  email: 'user@example.com',
-  password: 'password123',
-  name: 'John Doe'
-});
-
-// Déconnexion
-await authClient.signOut();
-```
-
-### Authentification côté serveur
-
-```typescript
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
-
-// Vérifier la session
-const session = await auth.api.getSession({
-  headers: await headers()
-});
-
-if (!session?.user) {
-  // Utilisateur non connecté
-}
-```
-
-### Avec Drizzle ORM
-
-```typescript
-import { db } from '@/lib/drizzle';
-import { user } from '@/db/schema';
-import { eq } from 'drizzle-orm';
-
-// Récupérer un utilisateur
-const userData = await db.select().from(user).where(eq(user.email, 'user@example.com'));
-
-// Créer un utilisateur
-await db.insert(user).values({
-  id: 'user-id',
-  name: 'John Doe',
-  email: 'john@example.com',
-  emailVerified: false,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-});
-```
-
-## Sécurité
-
-- ✅ Middleware de protection automatique
-- ✅ Validation des mots de passe (min 8 caractères)
-- ✅ Gestion des erreurs avec notifications
-- ✅ Sessions sécurisées avec Better Auth
+- ✅ Authentification sécurisée avec Better Auth
 - ✅ Protection CSRF intégrée
-- ✅ Compatible Edge Runtime
+- ✅ Validation des données avec Zod
+- ✅ Actions serveur sécurisées avec Safe Actions
+- ✅ Middleware de protection des routes
+- ✅ Sessions sécurisées et persistantes
 
-## Technologies utilisées
+## 🤝 Contribution
 
-- **[Next.js](https://nextjs.org)** - Framework React pour la production
-- **[Drizzle ORM](https://orm.drizzle.team)** - ORM TypeScript moderne
-- **[Better Auth](https://www.better-auth.com)** - Solution d'authentification complète
-- **[SQLite](https://www.sqlite.org)** - Base de données embarquée
-- **[Tailwind CSS](https://tailwindcss.com)** - Framework CSS utilitaire
-- **[TypeScript](https://www.typescriptlang.org)** - JavaScript avec typage statique
+1. Fork le projet
+2. Créez une branche pour votre fonctionnalité
+3. Committez vos changements
+4. Poussez vers la branche
+5. Ouvrez une Pull Request
 
-## Ressources
+## 📋 Attribution
 
-- [Documentation Next.js](https://nextjs.org/docs) - Fonctionnalités et API Next.js
-- [Documentation Drizzle ORM](https://orm.drizzle.team/docs/get-started/sqlite-new)
-- [Documentation Better Auth](https://www.better-auth.com/docs/basic-usage#sign-up)
-- [Drizzle Studio](https://orm.drizzle.team/drizzle-studio/overview) - Interface graphique pour votre base de données
+**Important :** Si vous utilisez cette application ou vous en inspirez pour vos propres projets, vous devez obligatoirement mentionner l'auteur original :
 
-## Déploiement
+- **Auteur :** Salcuni Giovanni
+- **Application :** Notes CFC - Application de Gestion des Notes et Compétences
+- **GitHub :** [https://github.com/Giovanni532/notes-cfc]
 
-Le moyen le plus simple de déployer votre application Next.js est d'utiliser la [plateforme Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) des créateurs de Next.js.
+Cette attribution peut être faite dans :
+- Le README de votre projet
+- Les commentaires de code
+- La documentation
+- Les crédits de l'application
 
-Consultez la [documentation de déploiement Next.js](https://nextjs.org/docs/app/building-your-application/deploying) pour plus de détails.
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 📞 Support
+
+Pour toute question ou problème :
+- Ouvrez une issue sur GitHub
+- Consultez la documentation des technologies utilisées
+- Contactez l'équipe de développement
+
+---
+
+**Développé avec ❤️ pour la formation CFC en informatique**
