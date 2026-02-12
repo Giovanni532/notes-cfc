@@ -10,7 +10,7 @@ const publicApiRoutes = ['/api/auth'];
 // Routes d'API qui nécessitent une authentification
 const protectedApiRoutes = ['/api/export'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Permettre l'accès aux routes d'API publiques
