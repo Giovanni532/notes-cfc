@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/drizzle";
 import { user, module, userModuleNote } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { PublicNotesView } from "@/components/public/public-notes-view";
 
 async function getPublicNotes() {
@@ -29,14 +29,19 @@ async function getPublicNotes() {
             .select({
                 moduleId: userModuleNote.moduleId,
                 note: userModuleNote.note,
+                updatedAt: userModuleNote.updatedAt,
             })
             .from(userModuleNote)
-            .where(eq(userModuleNote.userId, userId));
+            .where(eq(userModuleNote.userId, userId))
+            .orderBy(desc(userModuleNote.updatedAt));
 
         // 3. Créer un map des notes par moduleId
-        const notesMap = new Map();
+        const notesMap = new Map<string, number>();
         for (const note of userNotes) {
-            notesMap.set(note.moduleId, note.note);
+            // Conserver uniquement la note la plus récente et ignorer les notes à 0
+            if (!notesMap.has(note.moduleId) && note.note > 0) {
+                notesMap.set(note.moduleId, note.note);
+            }
         }
 
         // 4. Combiner les données et grouper par année
@@ -49,6 +54,9 @@ async function getPublicNotes() {
             }
 
             const userNote = notesMap.get(mod.id);
+            if (!userNote) {
+                continue;
+            }
 
             modulesByYear[year].push({
                 id: mod.id,
@@ -56,7 +64,7 @@ async function getPublicNotes() {
                 code: mod.code,
                 annee: mod.annee,
                 isCie: mod.isCie,
-                note: userNote || 0,
+                note: userNote,
             });
         }
 
